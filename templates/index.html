@@ -1,0 +1,289 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employment Data Visualization</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>📊 Employment Data Visualization</h1>
+
+    <form method="get" action="/" style="margin-bottom: 20px;">
+        <label for="indicator">Select Indicator:</label>
+        <select name="indicator" id="indicator">
+            {% for i in indicators %}
+                <option value="{{ i }}" {% if i == selected_indicator %}selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="year">Select Year:</label>
+        <select name="year" id="year">
+            {% for y in years %}
+                <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Show Chart</button>
+    </form>
+
+    <div>
+        {{ chart|safe }}
+    </div>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Global Employment Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 20px; }
+        .container { max-width: 1100px; margin: auto; }
+        select, button { padding: 8px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; }
+        .chart { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 8px #ccc; }
+        .insight { margin-top: 20px; background: #fff; padding: 15px; border-left: 4px solid #007bff; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>🌍 Global Employment Data Visualization</h2>
+
+    <form method="get">
+        <label>Indicator:</label>
+        <select name="indicator">
+            {% for i in indicators %}
+                <option value="{{ i }}" {% if i == selected_indicator %}selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Year:</label>
+        <select name="year">
+            {% for y in years %}
+                <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Gender:</label>
+        <select name="gender">
+            {% for g in genders %}
+                <option value="{{ g }}" {% if g == selected_gender %}selected{% endif %}>{{ g }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Update</button>
+    </form>
+
+    <div class="chart">{{ chart|safe }}</div>
+
+    <div class="insight">
+        <strong>Insight:</strong> {{ insight }}
+    </div>
+</div>
+</body>
+</html>
+ -->
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employment Data Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, input, button {
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .chart-container {
+            margin-top: 20px;
+        }
+        .insight {
+            background: #eaf4ff;
+            border-left: 5px solid #007BFF;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌍 Global Employment Data Visualization</h1>
+
+    <form method="get">
+        <label>Indicator:</label>
+        <select name="indicator" id="indicator_id">
+            {% for i in indicators %}
+                <option value="{{ i }}" {% if i == selected_indicator %}selected{% endif %}>{{ i }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Gender:</label>
+        <select name="gender">
+            {% for g in genders %}
+                <option value="{{ g }}" {% if g == selected_gender %}selected{% endif %}>{{ g }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Year:</label>
+        <select name="year" id="year_id">
+            {% for y in years %}
+                <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Country Search:</label>
+        <input type="text" name="country" id="country_id" placeholder="e.g. India" value="{{ selected_country }}">
+
+        <label>View Mode:</label>
+        <select name="mode">
+            <option value="Top15" {% if view_mode == 'Top15' %}selected{% endif %}>Top 15</option>
+            <option value="Trend" {% if view_mode == 'Trend' %}selected{% endif %}>Trend View</option>
+        </select>
+
+        <button type="submit">Apply</button>
+    </form>
+
+
+    <div style="margin-bottom: 20px; padding: 20px; background: #fff; border-radius: 8px; border-left: 6px solid #8e44ad; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; color: #8e44ad;">🤖 AI Economic Analyst</h3>
+            <button onclick="fetchAIExplanation()" id="ai-btn" style="background-color: #8e44ad; border: none;">
+                Analyze Current Selection
+            </button>
+        </div>
+        <div id="ai-result" style="margin-top: 15px; color: #444; line-height: 1.6; min-height: 20px;">
+            <em>Select a country and year, then click the button to generate a deep-dive analysis.</em>
+        </div>
+    </div>
+
+    <div class="insight">{{ insight }}</div>
+    <div class="chart-container">
+        {{ chart|safe }}
+    </div>
+    <div class="alert alert-secondary" role="alert">
+    <strong>Year-on-Year:</strong> {{ yoy_insight }}
+    </div>
+        <!-- --- Prediction block --- -->
+    <div class="mt-2">
+    <p class="card-text"><strong>Prediction series:</strong>
+        {% if prediction_series_name %}{{ prediction_series_name }}{% else %}Global mean{% endif %}
+    </p>
+
+    {% if prediction_insight %}
+        <p class="card-text"><strong>Prediction:</strong> {{ prediction_insight }}</p>
+    {% endif %}
+
+    {% if prediction_points %}
+        <div class="mb-2">
+        <strong>Forecast (point estimate ±95% CI):</strong>
+        <ul>
+            {% for p in prediction_points %}
+            <li>{{ p.year }}: {{ p.pred }}% ({{ p.lower }} – {{ p.upper }})</li>
+            {% endfor %}
+        </ul>
+        </div>
+    {% else %}
+        <!-- Show short hint when no numeric forecast available -->
+        <p class="text-muted small">No numeric forecast available. Try searching a country with ≥5 years of data or pick a wider time range.</p>
+    {% endif %}
+    </div>
+
+
+
+    <!-- Trend Insight -->
+    <div class="alert alert-warning" role="alert">
+    <strong>Trend Summary:</strong> {{ trend_insight }}
+    </div>
+    <p><strong>Consistency:</strong> {{ consistency_insight }}</p>
+    <p><strong>Gender Gap:</strong> {{ gender_gap_insight }}</p>
+
+
+    <script>
+        async function fetchAIExplanation() {
+            const btn = document.getElementById('ai-btn');
+            const resultDiv = document.getElementById('ai-result');
+            
+            // 1. Get values from your inputs using the IDs we added
+            const country = document.getElementById('country_id').value;
+            const year = document.getElementById('year_id').value;
+            const indicator = document.getElementById('indicator_id').value;
+
+            if (!country) {
+                resultDiv.innerHTML = "<span style='color:red'>Please type a country name first!</span>";
+                return;
+            }
+
+            // 2. Show Loading State
+            btn.disabled = true;
+            btn.innerHTML = "Thinking...";
+            resultDiv.innerHTML = "<i>Consulting historical economic data...</i>";
+
+            try {
+                // 3. Send data to your new Python route
+                const response = await fetch('/get_ai_insight', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        country: country, 
+                        year: year, 
+                        indicator: indicator 
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // 4. Display Result (Convert **bold** to HTML bold if you want, or just plain text)
+                    // Simple formatting to remove markdown stars
+                    let cleanText = data.content.replace(/\*\*/g, "<b>").replace(/\*/g, "<li>");
+                    resultDiv.innerHTML = cleanText;
+                } else {
+                    resultDiv.innerText = "Error: " + data.error;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerText = "Failed to connect to AI server.";
+            }
+
+            // 5. Reset Button
+            btn.disabled = false;
+            btn.innerHTML = "Analyze Current Selection";
+        }
+    </script>
+
+</body>
+</html>
