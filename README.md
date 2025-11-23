@@ -14,6 +14,7 @@ An interactive data dashboard that visualizes global employment trends using **P
 * **Frontend:** HTML, CSS, JavaScript (AJAX)
 * **AI:** Google Generative AI (Gemini)
 * **Deployment:** Render
+* check the live website at: https://employment-visualisation.onrender.com
 
 ## 📊 How to Run Locally
 1.  Clone the repository.
